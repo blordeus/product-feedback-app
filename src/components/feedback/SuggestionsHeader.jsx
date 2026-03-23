@@ -2,14 +2,16 @@ const sortOptions = [
   { label: "Most Upvotes", value: "most-upvotes" },
   { label: "Least Upvotes", value: "least-upvotes" },
   { label: "Most Comments", value: "most-comments" },
-  { label: "least Comments", value: "least-comments" },
+  { label: "Least Comments", value: "least-comments" },
 ];
 
 export default function SuggestionsHeader({ count, sortBy, onSortChange }) {
   return (
-    <header className="flex items-center justify-between rounded-[10px] bg-navy px-6 py-4 text-white">
-      <div className="flex items-center gap-8">
-        <h2 className="text-[18px] font-bold">{count} Suggestions</h2>
+    <header className="flex items-center justify-between rounded-[10px] bg-navy px-4 py-4 text-white sm:px-6">
+      <div className="flex items-center gap-4 sm:gap-8">
+        <h2 className="hidden text-[18px] font-bold md:block">
+          {count} Suggestions
+        </h2>
 
         <label className="flex items-center gap-2 text-[14px]">
           <span className="text-white/75">Sort by :</span>
@@ -28,7 +30,7 @@ export default function SuggestionsHeader({ count, sortBy, onSortChange }) {
         </label>
       </div>
 
-      <button className="rounded-[10px] bg-primary px-5 py-3 text-[14px] font-bold text-white">
+      <button className="rounded-[10px] bg-primary px-4 py-3 text-[14px] font-bold text-white sm:px-5">
         + Add Feedback
       </button>
     </header>

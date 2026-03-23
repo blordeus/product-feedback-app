@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import MobileHeader from "../components/layout/MobileHeader";
 import Sidebar from "../components/layout/Sidebar";
 import SuggestionsHeader from "../components/feedback/SuggestionsHeader";
 import FeedbackCard from "../components/feedback/FeedbackCard";
@@ -14,6 +15,23 @@ function getCommentCount(comments = []) {
 export default function Suggestions() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("most-upvotes");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const roadmapCounts = useMemo(() => {
+    return data.productRequests.reduce(
+      (counts, item) => {
+        if (item.status === "planned") counts.planned += 1;
+        if (item.status === "in-progress") counts["in-progress"] += 1;
+        if (item.status === "live") counts.live += 1;
+        return counts;
+      },
+      {
+        planned: 0,
+        "in-progress": 0,
+        live: 0,
+      }
+    );
+  }, []);
 
   const suggestions = useMemo(() => {
     const suggestionItems = data.productRequests.filter(
@@ -27,7 +45,7 @@ export default function Suggestions() {
             (item) => item.category.toLowerCase() === activeCategory.toLowerCase()
           );
 
-    const sortedItems = [...filteredItems].sort((a, b) => {
+    return [...filteredItems].sort((a, b) => {
       switch (sortBy) {
         case "least-upvotes":
           return a.upvotes - b.upvotes;
@@ -40,16 +58,35 @@ export default function Suggestions() {
           return b.upvotes - a.upvotes;
       }
     });
-
-    return sortedItems;
   }, [activeCategory, sortBy]);
 
+  function handleCategoryChange(category) {
+    setActiveCategory(category);
+    setIsMenuOpen(false);
+  }
+
+  function handleToggleMenu() {
+    setIsMenuOpen((prev) => !prev);
+  }
+
+  function handleCloseMenu() {
+    setIsMenuOpen(false);
+  }
+
   return (
-    <main className="mx-auto max-w-[1110px] px-6 py-10 lg:py-24">
-      <div className="grid gap-6 lg:grid-cols-[255px_1fr] lg:items-start">
+    <main className="mx-auto max-w-[1110px] px-6 py-8 lg:py-24">
+      <MobileHeader
+        isMenuOpen={isMenuOpen}
+        onToggleMenu={handleToggleMenu}
+      />
+
+      <div className="mt-8 grid gap-6 lg:mt-0 lg:grid-cols-[255px_1fr] lg:items-start">
         <Sidebar
           activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
+          onCategoryChange={handleCategoryChange}
+          roadmapCounts={roadmapCounts}
+          isMobileOpen={isMenuOpen}
+          onCloseMenu={handleCloseMenu}
         />
 
         <section className="flex flex-col gap-6">
