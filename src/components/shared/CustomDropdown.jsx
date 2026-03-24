@@ -61,7 +61,10 @@ export default function CustomDropdown({
   return (
     <div className={className}>
       {label ? (
-        <label className="block text-[13px] font-bold text-dark sm:text-[14px]">
+        <label
+          id={`${name}-label`}
+          className="block text-[13px] font-bold text-dark sm:text-[14px]"
+        >
           {label}
         </label>
       ) : null}
@@ -73,9 +76,11 @@ export default function CustomDropdown({
       <div ref={containerRef} className={label || hint ? "relative mt-4" : "relative"}>
         <button
           type="button"
+          role="combobox"
           onClick={() => setIsOpen((prev) => !prev)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
+          aria-labelledby={label ? `${name}-label` : undefined}
           className={triggerClasses}
         >
           <span>{selectedOption?.label ?? "Select an option"}</span>
@@ -98,8 +103,10 @@ export default function CustomDropdown({
                   <li key={option.value}>
                     <button
                       type="button"
+                      role="option"
+                      aria-selected={isSelected}
                       onClick={() => handleSelect(option.value)}
-                      className="flex w-full items-center justify-between px-6 py-3 text-left text-[16px] text-text hover:text-primary"
+                      className="flex w-full items-center justify-between px-6 py-3 text-left text-[16px] text-text hover:text-primary focus:outline-none focus:text-primary"
                     >
                       <span>{option.label}</span>
                       {isSelected ? (

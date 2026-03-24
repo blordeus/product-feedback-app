@@ -55,7 +55,7 @@ export default function AddCommentForm({ onAddComment }) {
           <button
             type="submit"
             disabled={!content.trim()}
-            className="rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Post Comment
           </button>

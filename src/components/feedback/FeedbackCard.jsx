@@ -17,7 +17,7 @@ export default function FeedbackCard({ feedback }) {
           <h3 className="text-[13px] font-bold text-dark sm:text-[18px]">
             <Link
               to={`/feedback/${feedback.id}`}
-              className="hover:text-secondary"
+              className="transition-colors hover:text-secondary focus:outline-none focus:text-secondary"
             >
               {feedback.title}
             </Link>
@@ -34,13 +34,13 @@ export default function FeedbackCard({ feedback }) {
       </div>
 
       <div className="mt-4 flex items-center justify-between sm:mt-5">
-        <button className="flex items-center gap-2 rounded-[10px] bg-light px-4 py-2 text-[13px] font-bold text-dark">
-          <span className="text-secondary">^</span>
+        <button className="flex items-center gap-2 rounded-[10px] bg-light px-4 py-2 text-[13px] font-bold text-dark transition-colors hover:bg-[#CFD7FF] focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2">
+          <span className="text-secondary" aria-hidden="true">▲</span>
           <span>{feedback.upvotes}</span>
         </button>
 
         <div className="flex items-center gap-2 text-[13px] font-bold text-dark sm:text-[16px]">
-          <span className="text-dark/25">💬</span>
+          <span className="text-dark/25" aria-hidden="true">●</span>
           <span>{commentCount}</span>
         </div>
       </div>

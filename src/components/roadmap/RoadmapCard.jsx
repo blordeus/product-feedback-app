@@ -31,7 +31,7 @@ export default function RoadmapCard({ feedback }) {
       <div className="mt-4">
         <Link
           to={`/feedback/${feedback.id}`}
-          className="text-[13px] font-bold text-dark hover:text-secondary sm:text-[18px]"
+          className="text-[13px] font-bold text-dark transition-colors hover:text-secondary focus:outline-none focus:text-secondary sm:text-[18px]"
         >
           {feedback.title}
         </Link>
@@ -48,14 +48,14 @@ export default function RoadmapCard({ feedback }) {
       <div className="mt-4 flex items-center justify-between">
         <button
           type="button"
-          className="flex items-center gap-2 rounded-[10px] bg-light px-4 py-2 text-[13px] font-bold text-dark"
+          className="flex items-center gap-2 rounded-[10px] bg-light px-4 py-2 text-[13px] font-bold text-dark transition-colors hover:bg-[#CFD7FF] focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
         >
-          <span className="text-secondary">^</span>
+          <span className="text-secondary" aria-hidden="true">▲</span>
           <span>{feedback.upvotes}</span>
         </button>
 
         <div className="flex items-center gap-2 text-[13px] font-bold text-dark sm:text-[16px]">
-          <span className="text-dark/25">💬</span>
+          <span className="text-dark/25" aria-hidden="true">●</span>
           <span>{commentCount}</span>
         </div>
       </div>

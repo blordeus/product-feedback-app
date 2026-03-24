@@ -52,7 +52,7 @@ export default function CommentItem({
                   replyingTo: comment.user.username,
                 })
               }
-              className="text-[13px] font-semibold text-secondary hover:underline"
+              className="text-[13px] font-semibold text-secondary hover:underline focus:outline-none focus:underline"
             >
               Reply
             </button>

@@ -91,14 +91,14 @@ export default function FeedbackDetail({
       <div className="mb-6 flex items-center justify-between">
         <Link
           to="/"
-          className="text-[14px] font-bold text-text hover:underline"
+          className="text-[14px] font-bold text-text hover:underline focus:outline-none focus:underline"
         >
           ← Go Back
         </Link>
 
         <Link
           to={`/edit/${feedback.id}`}
-          className="rounded-[10px] bg-secondary px-5 py-3 text-[14px] font-bold text-white"
+          className="rounded-[10px] bg-secondary px-5 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
           Edit Feedback
         </Link>

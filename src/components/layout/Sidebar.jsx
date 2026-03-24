@@ -43,7 +43,7 @@ export default function Sidebar({
                     key={category}
                     type="button"
                     onClick={() => onCategoryChange(category)}
-                    className={`rounded-[10px] px-4 py-2 text-[13px] font-semibold transition-colors ${
+                    className={`rounded-[10px] px-4 py-2 text-[13px] font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 ${
                       isActive
                         ? "bg-secondary text-white"
                         : "bg-light text-secondary hover:bg-[#CFD7FF]"
@@ -61,7 +61,7 @@ export default function Sidebar({
               <h2 className="text-[18px] font-bold text-dark">Roadmap</h2>
               <Link
                 to="/roadmap"
-                className="text-[13px] font-semibold text-secondary underline"
+                className="text-[13px] font-semibold text-secondary underline hover:underline focus:outline-none focus:underline"
               >
                 View
               </Link>

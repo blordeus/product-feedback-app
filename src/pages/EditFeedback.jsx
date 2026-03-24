@@ -129,7 +129,7 @@ export default function EditFeedback({
     <main className="mx-auto max-w-[540px] px-4 py-8 sm:px-6 sm:py-14">
       <Link
         to={`/feedback/${feedback.id}`}
-        className="text-[14px] font-bold text-text hover:underline"
+        className="text-[14px] font-bold text-text hover:underline focus:outline-none focus:underline"
       >
         ← Go Back
       </Link>
@@ -160,6 +160,8 @@ export default function EditFeedback({
               type="text"
               value={formValues.title}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.title)}
+              aria-describedby={errors.title ? "title-error" : undefined}
               className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
                 errors.title
                   ? "ring-2 ring-danger"
@@ -167,7 +169,7 @@ export default function EditFeedback({
               }`}
             />
             {errors.title ? (
-              <p className="mt-2 text-[14px] text-danger">{errors.title}</p>
+              <p id="title-error" className="mt-2 text-[14px] text-danger">{errors.title}</p>
             ) : null}
           </div>
 
@@ -216,6 +218,8 @@ export default function EditFeedback({
               rows={5}
               value={formValues.detail}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.detail)}
+              aria-describedby={errors.detail ? "detail-error" : undefined}
               className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
                 errors.detail
                   ? "ring-2 ring-danger"
@@ -223,7 +227,7 @@ export default function EditFeedback({
               }`}
             />
             {errors.detail ? (
-              <p className="mt-2 text-[14px] text-danger">{errors.detail}</p>
+              <p id="detail-error" className="mt-2 text-[14px] text-danger">{errors.detail}</p>
             ) : null}
           </div>
 
@@ -231,7 +235,7 @@ export default function EditFeedback({
             <button
               type="button"
               onClick={handleDelete}
-              className="rounded-[10px] bg-danger px-6 py-3 text-[14px] font-bold text-white"
+              className="rounded-[10px] bg-danger px-6 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
             >
               Delete
             </button>
@@ -239,14 +243,14 @@ export default function EditFeedback({
             <div className="flex flex-col-reverse gap-4 sm:flex-row">
               <Link
                 to={`/feedback/${feedback.id}`}
-                className="rounded-[10px] bg-dark px-6 py-3 text-center text-[14px] font-bold text-white"
+                className="rounded-[10px] bg-dark px-6 py-3 text-center text-[14px] font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
               >
                 Cancel
               </Link>
 
               <button
                 type="submit"
-                className="rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white"
+                className="rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
               >
                 Save Changes
               </button>
