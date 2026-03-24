@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const sortOptions = [
   { label: "Most Upvotes", value: "most-upvotes" },
   { label: "Least Upvotes", value: "least-upvotes" },
@@ -30,9 +32,12 @@ export default function SuggestionsHeader({ count, sortBy, onSortChange }) {
         </label>
       </div>
 
-      <button className="rounded-[10px] bg-primary px-4 py-3 text-[14px] font-bold text-white sm:px-5">
+      <Link
+        to="/new"
+        className="rounded-[10px] bg-primary px-4 py-3 text-[14px] font-bold text-white sm:px-5"
+      >
         + Add Feedback
-      </button>
+      </Link>
     </header>
   );
 }
