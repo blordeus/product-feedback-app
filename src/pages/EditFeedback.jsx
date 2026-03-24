@@ -1,10 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import data from "../data/data.json";
 
-export default function EditFeedback() {
+export default function EditFeedback({ productRequests }) {
   const { id } = useParams();
 
-  const feedback = data.productRequests.find(
+  const feedback = productRequests.find(
     (item) => item.id === Number(id)
   );
 

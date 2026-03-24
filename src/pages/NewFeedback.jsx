@@ -1,6 +1,79 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function NewFeedback() {
+const initialFormValues = {
+  title: "",
+  category: "feature",
+  detail: "",
+};
+
+export default function NewFeedback({ productRequests, onAddFeedback }) {
+  const navigate = useNavigate();
+
+  const [formValues, setFormValues] = useState(initialFormValues);
+  const [errors, setErrors] = useState({});
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [name]: value,
+    }));
+
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [name]: "",
+    }));
+  }
+
+  function validateForm() {
+    const nextErrors = {};
+
+    if (!formValues.title.trim()) {
+      nextErrors.title = "Can't be empty";
+    }
+
+    if (!formValues.category.trim()) {
+      nextErrors.category = "Please select a category";
+    }
+
+    if (!formValues.detail.trim()) {
+      nextErrors.detail = "Can't be empty";
+    }
+
+    return nextErrors;
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    const nextId =
+      productRequests.length > 0
+        ? Math.max(...productRequests.map((item) => item.id)) + 1
+        : 1;
+
+    const newFeedback = {
+      id: nextId,
+      title: formValues.title.trim(),
+      category: formValues.category,
+      upvotes: 0,
+      status: "suggestion",
+      description: formValues.detail.trim(),
+      comments: [],
+    };
+
+    onAddFeedback(newFeedback);
+    navigate("/");
+  }
+
   return (
     <main className="mx-auto max-w-[540px] px-4 py-8 sm:px-6 sm:py-14">
       <Link
@@ -19,7 +92,7 @@ export default function NewFeedback() {
           Create New Feedback
         </h1>
 
-        <form className="mt-10 space-y-6">
+        <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
           <div>
             <label
               htmlFor="title"
@@ -34,8 +107,15 @@ export default function NewFeedback() {
               id="title"
               name="title"
               type="text"
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.title}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.title ? "ring-2 ring-danger" : "focus:ring-2 focus:ring-secondary"
+              }`}
             />
+            {errors.title ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.title}</p>
+            ) : null}
           </div>
 
           <div>
@@ -51,8 +131,13 @@ export default function NewFeedback() {
             <select
               id="category"
               name="category"
-              defaultValue="feature"
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.category}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.category
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
+              }`}
             >
               <option value="feature">Feature</option>
               <option value="ui">UI</option>
@@ -60,6 +145,9 @@ export default function NewFeedback() {
               <option value="enhancement">Enhancement</option>
               <option value="bug">Bug</option>
             </select>
+            {errors.category ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.category}</p>
+            ) : null}
           </div>
 
           <div>
@@ -76,8 +164,15 @@ export default function NewFeedback() {
               id="detail"
               name="detail"
               rows={5}
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.detail}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.detail ? "ring-2 ring-danger" : "focus:ring-2 focus:ring-secondary"
+              }`}
             />
+            {errors.detail ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.detail}</p>
+            ) : null}
           </div>
 
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">

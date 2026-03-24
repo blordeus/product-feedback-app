@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import RoadmapColumn from "../components/roadmap/RoadmapColumn";
-import data from "../data/data.json";
 
 const roadmapTabs = [
   {
@@ -24,11 +23,11 @@ const roadmapTabs = [
   },
 ];
 
-export default function Roadmap() {
+export default function Roadmap({ productRequests }) {
   const [activeTab, setActiveTab] = useState("planned");
 
   const groupedFeedback = useMemo(() => {
-    return data.productRequests.reduce(
+    return productRequests.reduce(
       (groups, item) => {
         if (item.status === "planned") groups.planned.push(item);
         if (item.status === "in-progress") groups["in-progress"].push(item);
@@ -41,7 +40,7 @@ export default function Roadmap() {
         live: [],
       }
     );
-  }, []);
+  }, [productRequests]);
 
   const activeTabConfig = roadmapTabs.find((tab) => tab.key === activeTab);
 

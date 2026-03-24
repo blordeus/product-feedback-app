@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import CommentItem from "../components/comments/CommentItem";
 import AddCommentForm from "../components/comments/AddCommentForm";
-import data from "../data/data.json";
 
 function getCommentCount(comments = []) {
   return comments.reduce((total, comment) => {
@@ -11,11 +10,11 @@ function getCommentCount(comments = []) {
   }, 0);
 }
 
-export default function FeedbackDetail() {
+export default function FeedbackDetail({ productRequests }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const feedback = data.productRequests.find((item) => item.id === Number(id));
+  const feedback = productRequests.find((item) => item.id === Number(id));
 
   const commentCount = useMemo(() => {
     return getCommentCount(feedback?.comments || []);

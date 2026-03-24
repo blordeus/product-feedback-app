@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import MobileHeader from "../components/layout/MobileHeader";
 import Sidebar from "../components/layout/Sidebar";
 import SuggestionsHeader from "../components/feedback/SuggestionsHeader";
 import FeedbackCard from "../components/feedback/FeedbackCard";
-import data from "../data/data.json";
 
 function getCommentCount(comments = []) {
   return comments.reduce((total, comment) => {
@@ -12,13 +12,13 @@ function getCommentCount(comments = []) {
   }, 0);
 }
 
-export default function Suggestions() {
+export default function Suggestions({ productRequests }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("most-upvotes");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const roadmapCounts = useMemo(() => {
-    return data.productRequests.reduce(
+    return productRequests.reduce(
       (counts, item) => {
         if (item.status === "planned") counts.planned += 1;
         if (item.status === "in-progress") counts["in-progress"] += 1;
@@ -31,10 +31,10 @@ export default function Suggestions() {
         live: 0,
       }
     );
-  }, []);
+  }, [productRequests]);
 
   const suggestions = useMemo(() => {
-    const suggestionItems = data.productRequests.filter(
+    const suggestionItems = productRequests.filter(
       (item) => item.status === "suggestion"
     );
 
@@ -58,7 +58,7 @@ export default function Suggestions() {
           return b.upvotes - a.upvotes;
       }
     });
-  }, [activeCategory, sortBy]);
+  }, [activeCategory, sortBy, productRequests]);
 
   function handleCategoryChange(category) {
     setActiveCategory(category);
@@ -74,7 +74,7 @@ export default function Suggestions() {
   }
 
   return (
-    <main className="mx-auto max-w-[1110px] px-6 py-8 lg:py-24">
+    <main className="mx-auto max-w-[1110px] px-4 py-8 sm:px-6 lg:py-24">
       <MobileHeader
         isMenuOpen={isMenuOpen}
         onToggleMenu={handleToggleMenu}
@@ -112,9 +112,12 @@ export default function Suggestions() {
                 hearing about new ideas to improve our app.
               </p>
 
-              <button className="mt-12 rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white">
+              <Link
+                to="/new"
+                className="mt-12 inline-block rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white"
+              >
                 + Add Feedback
-              </button>
+              </Link>
             </div>
           )}
         </section>
