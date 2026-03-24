@@ -15,9 +15,7 @@ export default function FeedbackDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const feedback = data.productRequests.find(
-    (item) => item.id === Number(id)
-  );
+  const feedback = data.productRequests.find((item) => item.id === Number(id));
 
   const commentCount = useMemo(() => {
     return getCommentCount(feedback?.comments || []);
@@ -44,12 +42,12 @@ export default function FeedbackDetail() {
           ← Go Back
         </Link>
 
-        <button
-          onClick={() => navigate(`/feedback/${id}/edit`)}
+        <Link
+          to={`/edit/${feedback.id}`}
           className="rounded-[10px] bg-secondary px-5 py-3 text-[14px] font-bold text-white"
         >
           Edit Feedback
-        </button>
+        </Link>
       </div>
 
       <div className="rounded-[10px] bg-white p-6 sm:p-7">
