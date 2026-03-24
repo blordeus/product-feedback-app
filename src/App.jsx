@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Suggestions from "./pages/Suggestions";
 import FeedbackDetail from "./pages/FeedbackDetail";
@@ -7,8 +7,26 @@ import EditFeedback from "./pages/EditFeedback";
 import Roadmap from "./pages/Roadmap";
 import data from "./data/data.json";
 
+const STORAGE_KEY = "product-feedback-app-data";
+
 export default function App() {
-  const [productRequests, setProductRequests] = useState(data.productRequests);
+  const [productRequests, setProductRequests] = useState(() => {
+    const storedValue = localStorage.getItem(STORAGE_KEY);
+
+    if (storedValue) {
+      try {
+        return JSON.parse(storedValue);
+      } catch (error) {
+        console.error("Failed to parse stored product requests:", error);
+      }
+    }
+
+    return data.productRequests;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(productRequests));
+  }, [productRequests]);
 
   function handleAddFeedback(newFeedback) {
     setProductRequests((currentItems) => [newFeedback, ...currentItems]);
