@@ -22,6 +22,12 @@ export default function App() {
     );
   }
 
+  function handleDeleteFeedback(feedbackId) {
+    setProductRequests((currentItems) =>
+      currentItems.filter((item) => item.id !== feedbackId)
+    );
+  }
+
   return (
     <Routes>
       <Route
@@ -47,6 +53,7 @@ export default function App() {
           <EditFeedback
             productRequests={productRequests}
             onUpdateFeedback={handleUpdateFeedback}
+            onDeleteFeedback={handleDeleteFeedback}
           />
         }
       />

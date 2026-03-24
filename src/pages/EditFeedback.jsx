@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 export default function EditFeedback({
   productRequests,
   onUpdateFeedback,
+  onDeleteFeedback,
 }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -65,6 +66,13 @@ export default function EditFeedback({
 
     return nextErrors;
   }
+
+  function handleDelete() {
+  if (!feedback) return;
+
+  onDeleteFeedback(feedback.id);
+  navigate("/");
+}
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -240,6 +248,7 @@ export default function EditFeedback({
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
+              onClick={handleDelete}
               className="rounded-[10px] bg-danger px-6 py-3 text-[14px] font-bold text-white"
             >
               Delete
