@@ -14,6 +14,14 @@ export default function App() {
     setProductRequests((currentItems) => [newFeedback, ...currentItems]);
   }
 
+  function handleUpdateFeedback(updatedFeedback) {
+    setProductRequests((currentItems) =>
+      currentItems.map((item) =>
+        item.id === updatedFeedback.id ? updatedFeedback : item
+      )
+    );
+  }
+
   return (
     <Routes>
       <Route
@@ -35,7 +43,12 @@ export default function App() {
       />
       <Route
         path="/edit/:id"
-        element={<EditFeedback productRequests={productRequests} />}
+        element={
+          <EditFeedback
+            productRequests={productRequests}
+            onUpdateFeedback={handleUpdateFeedback}
+          />
+        }
       />
       <Route
         path="/roadmap"

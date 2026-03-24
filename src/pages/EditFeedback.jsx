@@ -1,11 +1,94 @@
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default function EditFeedback({ productRequests }) {
+export default function EditFeedback({
+  productRequests,
+  onUpdateFeedback,
+}) {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const feedback = productRequests.find(
-    (item) => item.id === Number(id)
-  );
+  const feedback = productRequests.find((item) => item.id === Number(id));
+
+  const [formValues, setFormValues] = useState({
+    title: "",
+    category: "feature",
+    status: "suggestion",
+    detail: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (!feedback) return;
+
+    setFormValues({
+      title: feedback.title,
+      category: feedback.category,
+      status: feedback.status,
+      detail: feedback.description,
+    });
+  }, [feedback]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [name]: value,
+    }));
+
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [name]: "",
+    }));
+  }
+
+  function validateForm() {
+    const nextErrors = {};
+
+    if (!formValues.title.trim()) {
+      nextErrors.title = "Can't be empty";
+    }
+
+    if (!formValues.category.trim()) {
+      nextErrors.category = "Please select a category";
+    }
+
+    if (!formValues.status.trim()) {
+      nextErrors.status = "Please select a status";
+    }
+
+    if (!formValues.detail.trim()) {
+      nextErrors.detail = "Can't be empty";
+    }
+
+    return nextErrors;
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (!feedback) return;
+
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    const updatedFeedback = {
+      ...feedback,
+      title: formValues.title.trim(),
+      category: formValues.category,
+      status: formValues.status,
+      description: formValues.detail.trim(),
+    };
+
+    onUpdateFeedback(updatedFeedback);
+    navigate(`/feedback/${feedback.id}`);
+  }
 
   if (!feedback) {
     return (
@@ -33,10 +116,10 @@ export default function EditFeedback({ productRequests }) {
         </div>
 
         <h1 className="text-[18px] font-bold text-dark sm:text-[24px]">
-          Editing ‘{feedback.title}’
+          Editing "{feedback.title}"
         </h1>
 
-        <form className="mt-10 space-y-6">
+        <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
           <div>
             <label
               htmlFor="title"
@@ -51,9 +134,17 @@ export default function EditFeedback({ productRequests }) {
               id="title"
               name="title"
               type="text"
-              defaultValue={feedback.title}
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.title}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.title
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
+              }`}
             />
+            {errors.title ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.title}</p>
+            ) : null}
           </div>
 
           <div>
@@ -69,8 +160,13 @@ export default function EditFeedback({ productRequests }) {
             <select
               id="category"
               name="category"
-              defaultValue={feedback.category}
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.category}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.category
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
+              }`}
             >
               <option value="feature">Feature</option>
               <option value="ui">UI</option>
@@ -78,6 +174,9 @@ export default function EditFeedback({ productRequests }) {
               <option value="enhancement">Enhancement</option>
               <option value="bug">Bug</option>
             </select>
+            {errors.category ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.category}</p>
+            ) : null}
           </div>
 
           <div>
@@ -93,14 +192,22 @@ export default function EditFeedback({ productRequests }) {
             <select
               id="status"
               name="status"
-              defaultValue={feedback.status}
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.status}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.status
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
+              }`}
             >
               <option value="suggestion">Suggestion</option>
               <option value="planned">Planned</option>
               <option value="in-progress">In-Progress</option>
               <option value="live">Live</option>
             </select>
+            {errors.status ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.status}</p>
+            ) : null}
           </div>
 
           <div>
@@ -117,9 +224,17 @@ export default function EditFeedback({ productRequests }) {
               id="detail"
               name="detail"
               rows={5}
-              defaultValue={feedback.description}
-              className="mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none focus:ring-2 focus:ring-secondary"
+              value={formValues.detail}
+              onChange={handleChange}
+              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
+                errors.detail
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
+              }`}
             />
+            {errors.detail ? (
+              <p className="mt-2 text-[14px] text-danger">{errors.detail}</p>
+            ) : null}
           </div>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
