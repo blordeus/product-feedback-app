@@ -1,6 +1,21 @@
 import { resolveAvatar } from "../../utils/avatarMap";
+import ReplyForm from "./ReplyForm";
 
-export default function ReplyItem({ reply }) {
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2);
+}
+
+export default function ReplyItem({
+  reply,
+  isReplying,
+  onStartReply,
+  onCancelReply,
+  onSubmitReply,
+}) {
   return (
     <article className="flex gap-4">
       <img
@@ -22,6 +37,7 @@ export default function ReplyItem({ reply }) {
 
           <button
             type="button"
+            onClick={onStartReply}
             className="text-[13px] font-semibold text-secondary hover:underline"
           >
             Reply
@@ -32,6 +48,14 @@ export default function ReplyItem({ reply }) {
           <span className="font-bold text-primary">@{reply.replyingTo} </span>
           {reply.content}
         </p>
+
+        {isReplying && (
+          <ReplyForm
+            replyingTo={reply.user.username}
+            onCancel={onCancelReply}
+            onSubmitReply={onSubmitReply}
+          />
+        )}
       </div>
     </article>
   );

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CommentItem from "../components/comments/CommentItem";
 import AddCommentForm from "../components/comments/AddCommentForm";
@@ -11,8 +11,13 @@ function getCommentCount(comments = []) {
   }, 0);
 }
 
-export default function FeedbackDetail({ productRequests, onAddComment }) {
+export default function FeedbackDetail({
+  productRequests,
+  onAddComment,
+  onAddReply,
+}) {
   const { id } = useParams();
+  const [activeReplyTarget, setActiveReplyTarget] = useState(null);
 
   const feedback = productRequests.find((item) => item.id === Number(id));
 
@@ -36,6 +41,38 @@ export default function FeedbackDetail({ productRequests, onAddComment }) {
     };
 
     onAddComment(feedback.id, newComment);
+  }
+
+  function handleStartReply({ type, commentId, replyingTo, replyIndex }) {
+    if (type === "comment") {
+      setActiveReplyTarget(`comment-${commentId}`);
+      return;
+    }
+
+    setActiveReplyTarget(`reply-${commentId}-${replyingTo}-${replyIndex}`);
+  }
+
+  function handleCancelReply() {
+    setActiveReplyTarget(null);
+  }
+
+  function handleSubmitReply({ commentId, replyingTo, content }) {
+    if (!feedback) return;
+
+    const parentComment = (feedback.comments || []).find(
+      (comment) => comment.id === commentId
+    );
+
+    const nextReply = {
+      content,
+      replyingTo,
+      user: data.currentUser,
+    };
+
+    if (!parentComment) return;
+
+    onAddReply(feedback.id, commentId, nextReply);
+    setActiveReplyTarget(null);
   }
 
   if (!feedback) {
@@ -91,6 +128,10 @@ export default function FeedbackDetail({ productRequests, onAddComment }) {
                 key={comment.id ?? `${comment.user.username}-${index}`}
                 comment={comment}
                 isLast={index === feedback.comments.length - 1}
+                activeReplyTarget={activeReplyTarget}
+                onStartReply={handleStartReply}
+                onCancelReply={handleCancelReply}
+                onSubmitReply={handleSubmitReply}
               />
             ))}
           </div>

@@ -1,8 +1,25 @@
 import ReplyItem from "./ReplyItem";
+import ReplyForm from "./ReplyForm";
 import { resolveAvatar } from "../../utils/avatarMap";
 
-export default function CommentItem({ comment, isLast }) {
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2);
+}
+
+export default function CommentItem({
+  comment,
+  isLast,
+  activeReplyTarget,
+  onStartReply,
+  onCancelReply,
+  onSubmitReply,
+}) {
   const hasReplies = comment.replies && comment.replies.length > 0;
+  const isReplyingToComment = activeReplyTarget === `comment-${comment.id}`;
 
   return (
     <article
@@ -28,6 +45,13 @@ export default function CommentItem({ comment, isLast }) {
 
             <button
               type="button"
+              onClick={() =>
+                onStartReply({
+                  type: "comment",
+                  commentId: comment.id,
+                  replyingTo: comment.user.username,
+                })
+              }
               className="text-[13px] font-semibold text-secondary hover:underline"
             >
               Reply
@@ -38,11 +62,48 @@ export default function CommentItem({ comment, isLast }) {
             {comment.content}
           </p>
 
+          {isReplyingToComment && (
+            <ReplyForm
+              replyingTo={comment.user.username}
+              onCancel={onCancelReply}
+              onSubmitReply={(content) =>
+                onSubmitReply({
+                  commentId: comment.id,
+                  replyingTo: comment.user.username,
+                  content,
+                })
+              }
+            />
+          )}
+
           {hasReplies && (
             <div className="mt-6 border-l border-[#8C92B3]/25 pl-6 sm:pl-8">
               <div className="space-y-6">
-                {comment.replies.map((reply) => (
-                  <ReplyItem key={reply.content + reply.user.username} reply={reply} />
+                {comment.replies.map((reply, index) => (
+                  <ReplyItem
+                    key={`${reply.user.username}-${reply.content}-${index}`}
+                    reply={reply}
+                    isReplying={
+                      activeReplyTarget ===
+                      `reply-${comment.id}-${reply.user.username}-${index}`
+                    }
+                    onStartReply={() =>
+                      onStartReply({
+                        type: "reply",
+                        commentId: comment.id,
+                        replyingTo: reply.user.username,
+                        replyIndex: index,
+                      })
+                    }
+                    onCancelReply={onCancelReply}
+                    onSubmitReply={(content) =>
+                      onSubmitReply({
+                        commentId: comment.id,
+                        replyingTo: reply.user.username,
+                        content,
+                      })
+                    }
+                  />
                 ))}
               </div>
             </div>

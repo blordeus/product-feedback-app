@@ -61,6 +61,26 @@ export default function App() {
     );
   }
 
+  function handleAddReply(feedbackId, commentId, newReply) {
+    setProductRequests((currentItems) =>
+      currentItems.map((item) => {
+        if (item.id !== feedbackId) return item;
+
+        return {
+          ...item,
+          comments: (item.comments || []).map((comment) => {
+            if (comment.id !== commentId) return comment;
+
+            return {
+              ...comment,
+              replies: comment.replies ? [...comment.replies, newReply] : [newReply],
+            };
+          }),
+        };
+      })
+    );
+  }
+
   return (
     <Routes>
       <Route
@@ -73,6 +93,7 @@ export default function App() {
           <FeedbackDetail
             productRequests={productRequests}
             onAddComment={handleAddComment}
+            onAddReply={handleAddReply}
           />
         }
       />
