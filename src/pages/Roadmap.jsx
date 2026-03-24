@@ -21,7 +21,7 @@ export default function Roadmap() {
   }, []);
 
   return (
-    <main className="mx-auto max-w-[1110px] px-4 py-8 sm:px-6 lg:py-20">
+    <main className="mx-auto max-w-[1110px] px-4 py-6 sm:px-6 sm:py-8 lg:py-20">
       <header className="rounded-[10px] bg-navy px-6 py-6 text-white">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -46,7 +46,7 @@ export default function Roadmap() {
         </div>
       </header>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3 lg:items-start">
+      <div className="mt-6 flex flex-col gap-8 lg:mt-8 lg:grid lg:grid-cols-3 lg:gap-6 lg:items-start">
         <RoadmapColumn
           title="Planned"
           description="Ideas prioritized for research"

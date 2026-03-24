@@ -10,8 +10,8 @@ export default function RoadmapColumn({
     <section className="flex flex-col">
       <div className={`h-2 rounded-t-[5px] ${colorClass}`} />
 
-      <div className="rounded-b-[10px] p-0">
-        <div className="mb-6 pt-6">
+      <div className="pt-6">
+        <div className="mb-6">
           <h2 className="text-[18px] font-bold text-dark">
             {title} ({items.length})
           </h2>
@@ -20,11 +20,17 @@ export default function RoadmapColumn({
           </p>
         </div>
 
-        <div className="space-y-4">
-          {items.map((feedback) => (
-            <RoadmapCard key={feedback.id} feedback={feedback} />
-          ))}
-        </div>
+        {items.length > 0 ? (
+          <div className="space-y-4">
+            {items.map((feedback) => (
+              <RoadmapCard key={feedback.id} feedback={feedback} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-[10px] bg-white p-6 text-[14px] text-text">
+            No items in this column yet.
+          </div>
+        )}
       </div>
     </section>
   );
