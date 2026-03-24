@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const MAX_COMMENT_LENGTH = 250;
 
-export default function AddCommentForm() {
+export default function AddCommentForm({ onAddComment }) {
   const [content, setContent] = useState("");
 
   const charactersLeft = MAX_COMMENT_LENGTH - content.length;
@@ -17,6 +17,13 @@ export default function AddCommentForm() {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    const trimmedContent = content.trim();
+
+    if (!trimmedContent) return;
+
+    onAddComment(trimmedContent);
+    setContent("");
   }
 
   return (
@@ -48,7 +55,7 @@ export default function AddCommentForm() {
           <button
             type="submit"
             disabled={!content.trim()}
-            className="rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90"
+            className="rounded-[10px] bg-primary px-6 py-3 text-[14px] font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Post Comment
           </button>

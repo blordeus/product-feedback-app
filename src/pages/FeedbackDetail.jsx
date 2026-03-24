@@ -1,7 +1,8 @@
 import { useMemo } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import CommentItem from "../components/comments/CommentItem";
 import AddCommentForm from "../components/comments/AddCommentForm";
+import data from "../data/data.json";
 
 function getCommentCount(comments = []) {
   return comments.reduce((total, comment) => {
@@ -10,15 +11,32 @@ function getCommentCount(comments = []) {
   }, 0);
 }
 
-export default function FeedbackDetail({ productRequests }) {
+export default function FeedbackDetail({ productRequests, onAddComment }) {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const feedback = productRequests.find((item) => item.id === Number(id));
 
   const commentCount = useMemo(() => {
     return getCommentCount(feedback?.comments || []);
   }, [feedback]);
+
+  function handleAddCommentSubmit(content) {
+    if (!feedback) return;
+
+    const existingComments = feedback.comments || [];
+    const nextCommentId =
+      existingComments.length > 0
+        ? Math.max(...existingComments.map((comment, index) => comment.id ?? index + 1)) + 1
+        : 1;
+
+    const newComment = {
+      id: nextCommentId,
+      content,
+      user: data.currentUser,
+    };
+
+    onAddComment(feedback.id, newComment);
+  }
 
   if (!feedback) {
     return (
@@ -81,7 +99,7 @@ export default function FeedbackDetail({ productRequests }) {
         )}
       </section>
 
-      <AddCommentForm />
+      <AddCommentForm onAddComment={handleAddCommentSubmit} />
     </main>
   );
 }

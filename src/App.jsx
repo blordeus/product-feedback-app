@@ -46,6 +46,21 @@ export default function App() {
     );
   }
 
+  function handleAddComment(feedbackId, newComment) {
+    setProductRequests((currentItems) =>
+      currentItems.map((item) => {
+        if (item.id !== feedbackId) return item;
+
+        const nextComments = item.comments ? [...item.comments, newComment] : [newComment];
+
+        return {
+          ...item,
+          comments: nextComments,
+        };
+      })
+    );
+  }
+
   return (
     <Routes>
       <Route
@@ -54,7 +69,12 @@ export default function App() {
       />
       <Route
         path="/feedback/:id"
-        element={<FeedbackDetail productRequests={productRequests} />}
+        element={
+          <FeedbackDetail
+            productRequests={productRequests}
+            onAddComment={handleAddComment}
+          />
+        }
       />
       <Route
         path="/new"
