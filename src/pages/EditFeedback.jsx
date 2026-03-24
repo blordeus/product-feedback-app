@@ -1,5 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import CustomDropdown from "../components/shared/CustomDropdown";
+
+const categoryOptions = [
+  { label: "Feature", value: "feature" },
+  { label: "UI", value: "ui" },
+  { label: "UX", value: "ux" },
+  { label: "Enhancement", value: "enhancement" },
+  { label: "Bug", value: "bug" },
+];
+
+const statusOptions = [
+  { label: "Suggestion", value: "suggestion" },
+  { label: "Planned", value: "planned" },
+  { label: "In-Progress", value: "in-progress" },
+  { label: "Live", value: "live" },
+];
 
 export default function EditFeedback({
   productRequests,
@@ -68,11 +84,11 @@ export default function EditFeedback({
   }
 
   function handleDelete() {
-  if (!feedback) return;
+    if (!feedback) return;
 
-  onDeleteFeedback(feedback.id);
-  navigate("/");
-}
+    onDeleteFeedback(feedback.id);
+    navigate("/");
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -156,63 +172,28 @@ export default function EditFeedback({
           </div>
 
           <div>
-            <label
-              htmlFor="category"
-              className="block text-[13px] font-bold text-dark sm:text-[14px]"
-            >
-              Category
-            </label>
-            <p className="mt-1 text-[13px] text-text sm:text-[14px]">
-              Choose a category for your feedback
-            </p>
-            <select
-              id="category"
+            <CustomDropdown
+              label="Category"
+              hint="Choose a category for your feedback"
               name="category"
               value={formValues.category}
+              options={categoryOptions}
               onChange={handleChange}
-              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
-                errors.category
-                  ? "ring-2 ring-danger"
-                  : "focus:ring-2 focus:ring-secondary"
-              }`}
-            >
-              <option value="feature">Feature</option>
-              <option value="ui">UI</option>
-              <option value="ux">UX</option>
-              <option value="enhancement">Enhancement</option>
-              <option value="bug">Bug</option>
-            </select>
+            />
             {errors.category ? (
               <p className="mt-2 text-[14px] text-danger">{errors.category}</p>
             ) : null}
           </div>
 
           <div>
-            <label
-              htmlFor="status"
-              className="block text-[13px] font-bold text-dark sm:text-[14px]"
-            >
-              Update Status
-            </label>
-            <p className="mt-1 text-[13px] text-text sm:text-[14px]">
-              Change feature state
-            </p>
-            <select
-              id="status"
+            <CustomDropdown
+              label="Update Status"
+              hint="Change feature state"
               name="status"
               value={formValues.status}
+              options={statusOptions}
               onChange={handleChange}
-              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
-                errors.status
-                  ? "ring-2 ring-danger"
-                  : "focus:ring-2 focus:ring-secondary"
-              }`}
-            >
-              <option value="suggestion">Suggestion</option>
-              <option value="planned">Planned</option>
-              <option value="in-progress">In-Progress</option>
-              <option value="live">Live</option>
-            </select>
+            />
             {errors.status ? (
               <p className="mt-2 text-[14px] text-danger">{errors.status}</p>
             ) : null}
@@ -226,7 +207,8 @@ export default function EditFeedback({
               Feedback Detail
             </label>
             <p className="mt-1 text-[13px] text-text sm:text-[14px]">
-              Include any specific comments on what should be improved, added, etc.
+              Include any specific comments on what should be improved, added,
+              etc.
             </p>
             <textarea
               id="detail"

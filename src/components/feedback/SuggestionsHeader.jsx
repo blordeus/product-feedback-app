@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import CustomDropdown from "../shared/CustomDropdown";
 
 const sortOptions = [
   { label: "Most Upvotes", value: "most-upvotes" },
@@ -8,6 +9,10 @@ const sortOptions = [
 ];
 
 export default function SuggestionsHeader({ count, sortBy, onSortChange }) {
+  function handleDropdownChange(event) {
+    onSortChange(event.target.value);
+  }
+
   return (
     <header className="flex items-center justify-between rounded-[10px] bg-navy px-4 py-4 text-white sm:px-6">
       <div className="flex items-center gap-4 sm:gap-8">
@@ -15,21 +20,17 @@ export default function SuggestionsHeader({ count, sortBy, onSortChange }) {
           {count} Suggestions
         </h2>
 
-        <label className="flex items-center gap-2 text-[14px]">
+        <div className="flex items-center gap-2 text-[14px]">
           <span className="text-white/75">Sort by :</span>
 
-          <select
+          <CustomDropdown
+            name="sortBy"
             value={sortBy}
-            onChange={(event) => onSortChange(event.target.value)}
-            className="bg-transparent font-bold text-white outline-none"
-          >
-            {sortOptions.map((option) => (
-              <option key={option.value} value={option.value} className="text-dark">
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+            options={sortOptions}
+            onChange={handleDropdownChange}
+            variant="header"
+          />
+        </div>
       </div>
 
       <Link

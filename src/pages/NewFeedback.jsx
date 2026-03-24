@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import CustomDropdown from "../components/shared/CustomDropdown";
 
 const initialFormValues = {
   title: "",
   category: "feature",
   detail: "",
 };
+
+const categoryOptions = [
+  { label: "Feature", value: "feature" },
+  { label: "UI", value: "ui" },
+  { label: "UX", value: "ux" },
+  { label: "Enhancement", value: "enhancement" },
+  { label: "Bug", value: "bug" },
+];
 
 export default function NewFeedback({ productRequests, onAddFeedback }) {
   const navigate = useNavigate();
@@ -76,10 +85,7 @@ export default function NewFeedback({ productRequests, onAddFeedback }) {
 
   return (
     <main className="mx-auto max-w-[540px] px-4 py-8 sm:px-6 sm:py-14">
-      <Link
-        to="/"
-        className="text-[14px] font-bold text-text hover:underline"
-      >
+      <Link to="/" className="text-[14px] font-bold text-text hover:underline">
         ← Go Back
       </Link>
 
@@ -110,7 +116,9 @@ export default function NewFeedback({ productRequests, onAddFeedback }) {
               value={formValues.title}
               onChange={handleChange}
               className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
-                errors.title ? "ring-2 ring-danger" : "focus:ring-2 focus:ring-secondary"
+                errors.title
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
               }`}
             />
             {errors.title ? (
@@ -119,32 +127,14 @@ export default function NewFeedback({ productRequests, onAddFeedback }) {
           </div>
 
           <div>
-            <label
-              htmlFor="category"
-              className="block text-[13px] font-bold text-dark sm:text-[14px]"
-            >
-              Category
-            </label>
-            <p className="mt-1 text-[13px] text-text sm:text-[14px]">
-              Choose a category for your feedback
-            </p>
-            <select
-              id="category"
+            <CustomDropdown
+              label="Category"
+              hint="Choose a category for your feedback"
               name="category"
               value={formValues.category}
+              options={categoryOptions}
               onChange={handleChange}
-              className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
-                errors.category
-                  ? "ring-2 ring-danger"
-                  : "focus:ring-2 focus:ring-secondary"
-              }`}
-            >
-              <option value="feature">Feature</option>
-              <option value="ui">UI</option>
-              <option value="ux">UX</option>
-              <option value="enhancement">Enhancement</option>
-              <option value="bug">Bug</option>
-            </select>
+            />
             {errors.category ? (
               <p className="mt-2 text-[14px] text-danger">{errors.category}</p>
             ) : null}
@@ -158,7 +148,8 @@ export default function NewFeedback({ productRequests, onAddFeedback }) {
               Feedback Detail
             </label>
             <p className="mt-1 text-[13px] text-text sm:text-[14px]">
-              Include any specific comments on what should be improved, added, etc.
+              Include any specific comments on what should be improved, added,
+              etc.
             </p>
             <textarea
               id="detail"
@@ -167,7 +158,9 @@ export default function NewFeedback({ productRequests, onAddFeedback }) {
               value={formValues.detail}
               onChange={handleChange}
               className={`mt-4 w-full rounded-[5px] bg-bg px-4 py-3 text-[15px] text-dark outline-none ${
-                errors.detail ? "ring-2 ring-danger" : "focus:ring-2 focus:ring-secondary"
+                errors.detail
+                  ? "ring-2 ring-danger"
+                  : "focus:ring-2 focus:ring-secondary"
               }`}
             />
             {errors.detail ? (
