@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import CommentItem from "../components/comments/CommentItem";
+import AddCommentForm from "../components/comments/AddCommentForm";
 import data from "../data/data.json";
 
 function getCommentCount(comments = []) {
@@ -12,6 +13,7 @@ function getCommentCount(comments = []) {
 
 export default function FeedbackDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const feedback = data.productRequests.find(
     (item) => item.id === Number(id)
@@ -42,7 +44,10 @@ export default function FeedbackDetail() {
           ← Go Back
         </Link>
 
-        <button className="rounded-[10px] bg-secondary px-5 py-3 text-[14px] font-bold text-white">
+        <button
+          onClick={() => navigate(`/feedback/${id}/edit`)}
+          className="rounded-[10px] bg-secondary px-5 py-3 text-[14px] font-bold text-white"
+        >
           Edit Feedback
         </button>
       </div>
@@ -68,7 +73,7 @@ export default function FeedbackDetail() {
           <div className="mt-7 space-y-6">
             {feedback.comments.map((comment, index) => (
               <CommentItem
-                key={comment.id}
+                key={comment.id ?? `${comment.user.username}-${index}`}
                 comment={comment}
                 isLast={index === feedback.comments.length - 1}
               />
@@ -78,6 +83,8 @@ export default function FeedbackDetail() {
           <p className="mt-4 text-[15px] text-text">No comments yet.</p>
         )}
       </section>
+
+      <AddCommentForm />
     </main>
   );
 }
