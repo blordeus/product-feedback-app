@@ -1,14 +1,6 @@
 import { resolveAvatar } from "../../utils/avatarMap";
 import ReplyForm from "./ReplyForm";
 
-function getInitials(name) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2);
-}
-
 export default function ReplyItem({
   reply,
   isReplying,
