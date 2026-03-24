@@ -1,16 +1,103 @@
-# React + Vite
+# Product Feedback App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive product feedback web app built with React, Vite, Tailwind
+CSS, and React Router.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project allows users to browse product suggestions, filter by
+category, sort feedback, view a roadmap by status, open individual
+feedback threads, add comments and replies, create new feedback, edit
+existing feedback, and delete feedback. App data persists locally with
+localStorage.
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+-   View all product suggestions
+-   Filter suggestions by category
+-   Sort by upvotes or comment count
+-   Open a dedicated feedback detail page
+-   Add comments and nested replies
+-   Create new feedback requests
+-   Edit feedback title, category, status, and description
+-   Delete feedback
+-   View roadmap items by status
+-   Mobile roadmap tabs
+-   Responsive mobile menu
+-   localStorage persistence
 
-## Expanding the ESLint configuration
+## Built With
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   React
+-   Vite
+-   React Router
+-   Tailwind CSS v4
+-   Local component state
+-   localStorage
+
+## Project Structure
+
+src/ components/ comments/ feedback/ layout/ roadmap/ shared/ data/
+pages/
+
+## Getting Started
+
+### Install dependencies
+
+npm install
+
+### Start the development server
+
+npm run dev
+
+### Build for production
+
+npm run build
+
+### Preview production build
+
+npm run preview
+
+## Screenshots
+
+### Desktop
+
+\[Add screenshot here\]
+
+### Tablet
+
+\[Add screenshot here\]
+
+### Mobile
+
+\[Add screenshot here\]
+
+## Notes
+
+-   Seed data comes from the provided Frontend Mentor JSON file.
+-   Feedback changes persist in localStorage.
+-   To reset local data during testing, clear the
+    'product-feedback-app-data' key.
+
+## What I Learned
+
+-   How to move from static JSON to shared app state
+-   How to build reusable UI components
+-   How to manage nested comments and replies
+-   How to structure a responsive app
+
+## Future Improvements
+
+-   Replace placeholder icons with SVG assets
+-   Add delete confirmation modal
+-   Improve dropdown accessibility
+-   Add upvote interactions
+-   Add animation polish
+
+## Author
+
+Bryan Lordeus
+
+## Acknowledgments
+
+Challenge by Frontend Mentor
