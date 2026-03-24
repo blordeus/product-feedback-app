@@ -1,5 +1,14 @@
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
+import CommentItem from "../components/comments/CommentItem";
 import data from "../data/data.json";
+
+function getCommentCount(comments = []) {
+  return comments.reduce((total, comment) => {
+    const replyCount = comment.replies ? comment.replies.length : 0;
+    return total + 1 + replyCount;
+  }, 0);
+}
 
 export default function FeedbackDetail() {
   const { id } = useParams();
@@ -7,6 +16,10 @@ export default function FeedbackDetail() {
   const feedback = data.productRequests.find(
     (item) => item.id === Number(id)
   );
+
+  const commentCount = useMemo(() => {
+    return getCommentCount(feedback?.comments || []);
+  }, [feedback]);
 
   if (!feedback) {
     return (
@@ -21,7 +34,6 @@ export default function FeedbackDetail() {
 
   return (
     <main className="mx-auto max-w-[730px] px-4 py-8 sm:px-6">
-      {/* Top actions */}
       <div className="mb-6 flex items-center justify-between">
         <Link
           to="/"
@@ -35,11 +47,8 @@ export default function FeedbackDetail() {
         </button>
       </div>
 
-      {/* Feedback Card */}
       <div className="rounded-[10px] bg-white p-6 sm:p-7">
-        <h1 className="text-[18px] font-bold text-dark">
-          {feedback.title}
-        </h1>
+        <h1 className="text-[18px] font-bold text-dark">{feedback.title}</h1>
 
         <p className="mt-2 text-[14px] text-text sm:text-[16px]">
           {feedback.description}
@@ -50,12 +59,25 @@ export default function FeedbackDetail() {
         </div>
       </div>
 
-      {/* Placeholder for comments */}
-      <div className="mt-6 rounded-[10px] bg-white p-6">
+      <section className="mt-6 rounded-[10px] bg-white p-6 sm:p-8">
         <h2 className="text-[18px] font-bold text-dark">
-          Comments (coming next)
+          {commentCount} Comment{commentCount === 1 ? "" : "s"}
         </h2>
-      </div>
+
+        {feedback.comments && feedback.comments.length > 0 ? (
+          <div className="mt-7 space-y-6">
+            {feedback.comments.map((comment, index) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                isLast={index === feedback.comments.length - 1}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-4 text-[15px] text-text">No comments yet.</p>
+        )}
+      </section>
     </main>
   );
 }
