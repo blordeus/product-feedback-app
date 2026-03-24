@@ -5,12 +5,13 @@ export default function RoadmapColumn({
   description,
   colorClass,
   items,
+  showTopBar = true,
 }) {
   return (
     <section className="flex flex-col">
-      <div className={`h-2 rounded-t-[5px] ${colorClass}`} />
+      {showTopBar && <div className={`h-2 rounded-t-[5px] ${colorClass}`} />}
 
-      <div className="pt-6">
+      <div className={showTopBar ? "pt-6" : "pt-0"}>
         <div className="mb-6">
           <h2 className="text-[18px] font-bold text-dark">
             {title} ({items.length})

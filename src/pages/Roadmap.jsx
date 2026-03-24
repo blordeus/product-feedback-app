@@ -1,9 +1,32 @@
 import { Link } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import RoadmapColumn from "../components/roadmap/RoadmapColumn";
 import data from "../data/data.json";
 
+const roadmapTabs = [
+  {
+    key: "planned",
+    title: "Planned",
+    description: "Ideas prioritized for research",
+    colorClass: "bg-warning",
+  },
+  {
+    key: "in-progress",
+    title: "In-Progress",
+    description: "Currently being developed",
+    colorClass: "bg-primary",
+  },
+  {
+    key: "live",
+    title: "Live",
+    description: "Released features",
+    colorClass: "bg-accent",
+  },
+];
+
 export default function Roadmap() {
+  const [activeTab, setActiveTab] = useState("planned");
+
   const groupedFeedback = useMemo(() => {
     return data.productRequests.reduce(
       (groups, item) => {
@@ -19,6 +42,8 @@ export default function Roadmap() {
       }
     );
   }, []);
+
+  const activeTabConfig = roadmapTabs.find((tab) => tab.key === activeTab);
 
   return (
     <main className="mx-auto max-w-[1110px] px-4 py-6 sm:px-6 sm:py-8 lg:py-20">
@@ -46,7 +71,47 @@ export default function Roadmap() {
         </div>
       </header>
 
-      <div className="mt-6 flex flex-col gap-8 lg:mt-8 lg:grid lg:grid-cols-3 lg:gap-6 lg:items-start">
+      <div className="mt-6 border-b border-dark/15 lg:hidden">
+        <div className="grid grid-cols-3">
+          {roadmapTabs.map((tab) => {
+            const isActive = activeTab === tab.key;
+            const count = groupedFeedback[tab.key].length;
+
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setActiveTab(tab.key)}
+                className={`relative px-2 py-5 text-center text-[13px] font-bold text-dark ${
+                  isActive ? "opacity-100" : "opacity-40"
+                }`}
+              >
+                <span>
+                  {tab.title} ({count})
+                </span>
+
+                {isActive && (
+                  <span
+                    className={`absolute bottom-0 left-0 h-1 w-full ${tab.colorClass}`}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-6 lg:hidden">
+        <RoadmapColumn
+          title={activeTabConfig.title}
+          description={activeTabConfig.description}
+          colorClass={activeTabConfig.colorClass}
+          items={groupedFeedback[activeTab]}
+          showTopBar={false}
+        />
+      </div>
+
+      <div className="hidden lg:grid lg:grid-cols-3 lg:gap-6 lg:items-start">
         <RoadmapColumn
           title="Planned"
           description="Ideas prioritized for research"
